@@ -109,13 +109,9 @@ intercept:
 Probabily you have noticed that my coefficient here is pretty small. Thats because I normalized them in Data Clean process. Here are equations to roll back: 
 $$
 X_{\text{normalized}} = \frac{X - \mu}{\sigma}
-$$
 
-$$
 \beta_{\text{original}} = \frac{\beta_{\text{normalized}}}{\sigma}
-$$
 
-$$
 \text{intercept}_{\text{original}} = \text{intercept}_{\text{normalized}} - \sum \left( \frac{\beta_{\text{normalized}} \times \mu}{\sigma} \right)
 $$
 

@@ -38,9 +38,27 @@ For "CarName" feature, it has a combination of car company and car model. So I u
 Correcting typos:
 1. After splitting, I checked "Company" feature. It uses both "maxda" and "mazda" for Mazda. So I use str.replace() function to replace all of them. Same process for "nissan" vs "Nissan", "porcshce" vs "porshe" and "toyouta" vs "toyoya".
 2. For "Model" feature, it contains so many separate models for Civic such as 'civic 1300', 'civic cvcc, 'civic (auto)', 'civic 1500 gl' as well as 'civic' itself. So I replace all values that has a substring of "civic" to "civic".
+3. I then check all other category features, for "enginetype", it shows me:('dohc', 'ohcv', 'ohc', 'l', 'rotor', 'ohcf', 'dohcv'). However, after searching online, there is no introduction of "ohcv". Before I started merging them to 'ohc', I checked the number of rows contains 'ohcv' which shows me 14 rows in total. Therefore, I just leave them unchanged but it still confuses me till now.
+
 For several features such as "Car_ID", I remove them because its useless for linear regression.
 
-## 
+## check Linear Regression Assumption
+For Linear Regression model, we must made the following assumptions: Normality, Independence, Linearity, Homoscedasticity. If one of them is violated, we must do transformation to dataset such as powerTransformation, Lasso/Ridge Regression etc. 
+
+### Normality
+I use Q-Q plot here to check for Normality. From Q-Q plot, all the points are following diagnose line in the graph. Therefore, our target value(car price feature) is normally distributed. 
+There are other methods we can use: density plot, residual plot, or Shapiro-Wilk Test for smaller dataset(n < 50). 
+
+### Independence
+I use Durbin-Watson Test here. My p-value is very large. So my features are all independent to dependent value. Also, based on my p-value = 0.92, it shows a potential multicollinearity issue that I will demonstrate it further. 
+
+### Linearity
+For checking Linearity, I use Harvey-Collier Test and residual fitted plot. But, I failed to implement on Harvey-Collier Test and my residual fitted plot is kind of separated by smooth line. So I dont think this dataset violate Linearity. Further, I will try to fix the bugs and try to use powerTransformation test to check if power transformation is necessary needed.
+
+### Homoscedasticity
+To check homoscedasticity, we mainly use ncv() Test in R. But in python, we use the Breusch-Pagan test. After testing, my p-value is less than 0.05 so homoscedasticity passed. 
+
+
 
 
 

@@ -83,13 +83,41 @@ After checking those points, I tried to make a naive implement of multivariable 
 
 So I will use several strageties to solve multicollinearity issue. 
 
-## Using Lasso Regression
+## Method1: Using Lasso Regression
+### Introduction of Lasso and Ridge
+Lasso Regression(L1) and Ridge Regression(L2) are useful tools to prevent multicollinearity and overfitting. 
+Lasso is usually used if there are so many features and we just want a litte subset of those features. 
+Ridge is usually used when #rows < #features and if noise data happens in training data. 
 
+### Lasso Regression parameter adjustment --- using loop
+For python Lasso method, I run parameter adjustment by nested loop to find the best combination of parameters. The results are: alpha = 0.1, max_iter = 100, tol = 0.01 to generate with mse = 0.099421, r2 = 0.800997. 
 
+Note: 
+I use mse and r2 to determine the best parameter. For same lowest mse value, I pick the highest r2 value. 
 
+### get features and coefficient
+After running Lasso, I get a list of features with their coefficients in linear regresssion model. But most of them have coefficient equals or less than 0. So I reject them all and pick the positive ones to run linear regression model. At last my model has mse = 0.1127 with the following features and their coefficients: 
+wheelbase     0.007559
+carwidth      0.163034
+curbweight    0.304283
+enginesize    0.381289
+fuelsystem    0.005185
+intercept: 
+-0.06580978126963455
 
+### Rescale coefficient
+Probabily you have noticed that my coefficient here is pretty small. Thats because I normalized them in Data Clean process. Here are equations to roll back: 
+$$
+X_{\text{normalized}} = \frac{X - \mu}{\sigma}
+$$
 
+$$
+\beta_{\text{original}} = \frac{\beta_{\text{normalized}}}{\sigma}
+$$
 
+$$
+\text{intercept}_{\text{original}} = \text{intercept}_{\text{normalized}} - \sum \left( \frac{\beta_{\text{normalized}} \times \mu}{\sigma} \right)
+$$
 
 
 

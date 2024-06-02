@@ -195,7 +195,11 @@ To check overfitting or underfitting issue, I run my model on training dataset a
 
 There are not too much difference. So my model has neither overfitting nor underfitting issue. 
 
-
+## TODO list
+1. try to implement better method for testing linearity.
+2. run powerTransformation to get suggested feature transformation.
+3. although my model performs well, it still has multicolliearity issue for a little bit. I need find some ways improving it.
+4. run non-linear regression model to see if there is any improvement for accuracy. 
 
 
 

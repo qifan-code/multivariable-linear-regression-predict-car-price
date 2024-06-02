@@ -115,8 +115,63 @@ $$\beta_{\text{original}} = \frac{\beta_{\text{normalized}}}{\sigma}$$
 rescale intercept equation:
 $$\text{intercept}_{\text{original}} = \text{intercept}_{\text{normalized}} - \sum \left( \frac{\beta_{\text{normalized}} \times \mu}{\sigma} \right)$$
 
+## Method3: Using PCA
+### Introduction to PCA
+PCA stands for Principal Component Analysis. It's a statistical procedure used primarily to reduce the dimensionality of a dataset while retaining as much variability (information) as possible. 
+If a dataset has multicollinearity issue, we can run PCA on and ONLY on numeric features to avoid this issue. 
 
+### Perform PCA
+Before running PCA model, I use Scree Plot to check my available n_factors value. 
+![1717303122864](https://github.com/qifan-code/multivariable-linear-regression-predict-car-price/assets/64823500/a8a634b6-b4f7-4480-a2e3-1f48788202e7)
+From this figure, I need to find "knee" point which means before this points, plot is decreasing so fast and after this point, plot becomes flat. 
+My optional n_factors values are: 2, 3, 4, 5, 6
 
+Then I run PCA for each of them to see how much variance they captured:
+|n_factors|variance captured|
+|---------|-----------------|
+|2|0.685205|
+|3|0.788831|
+|4|0.858844|
+|5|0.903513|
+|6|0.931659|
+
+my choice here is to pick n_factors = 4 because: 
+1. usually variance captures between 85% to 90% is the optimal solution.
+2. although n_factors = 3 is a clear knee point, it only capture 78.8% variance.
+3. n_factors = 4 reaches the bottom level of requirements.
+4. although other values can capture more variance, it has a trade-off between time consuming and variance. So for n_factors = 5 or 6, I will ignore them.
+
+### Combine PCA with category dataset to form a new dataset
+Before I run PCA, I separate dataset into numeric and category part. So after that, I combine them to form a new dataset. 
+
+### Run Lasso and feature selection
+Although I reduced dimension of numeric features, there are lots of category features. I need Lasso or stepwise to reduce number of features. 
+#### Lasso regualarlization result
+For Lasso regualarlization, I run parameter adjustment to get the best combination of parameters: 
+alpha = 0.1, max_iter = 100, tol = 0.1 generate a result of mse = 0.12, r2 = 0.742516
+
+Then I use this model to select my features: 
+PCA1          0.274638
+fuelsystem    0.006599
+intercept: 
+-0.16537733126361487
+
+This might be confused because this model only contains 2 features. But for each PCA column we generated, it is a combination of each numeric feature. So Lasso indeed reduce several category features and give us a model with mse = 0.12, accuracy = 0.88. 
+
+### Run feature selection
+General ways of feature selection contains 3 methods: forward selction, backwards selection and stepwise selection. 
+#### Introduction to these methods
+1. forward selection: start with empty sets. Every time, sdds the variable that provides the most significant improvement to the model. When features left has no contribution to model performance, it stops.
+2. backward selection: start with all features set. Evert time, removes the least significant variable (the one with the highest p-value above a certain threshold) at each step. When removing more variables does not improve the model performance or all remaining variables are significant, it stops.
+3. stepwise selection: a combination of forward and backward selection. Begins like forward selection by adding variables, but after adding each new variable, it checks if any variables previously added have become statistically insignificant and should be removed. Stops when no further variables can be added or removed to improve the model.
+
+#### pick optimal methods
+My function basically calculate AIC, BIC and R2 for each selection method. For AIC/BIC, the lower the better. For R2, the higher the better. 
+Based rules above, I run linear regression model for selected features:
+|method|mse|features|
+|forward|0.1138|'PCA1', 'Company', 'drivewheel', 'carbody'|
+|backward|0.1176|'PCA1', 'PCA2', 'PCA4', 'fueltype', 'doornumber', 'carbody', 'drivewheel', 'enginetype', 'cylindernumber', 'Company', 'Model|
+|stepwise|0.1138|'PCA1', 'Company', 'drivewheel', 'carbody'|
 
 
 

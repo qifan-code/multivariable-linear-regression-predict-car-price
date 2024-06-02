@@ -169,6 +169,7 @@ General ways of feature selection contains 3 methods: forward selction, backward
 My function basically calculate AIC, BIC and R2 for each selection method. For AIC/BIC, the lower the better. For R2, the higher the better. 
 Based rules above, I run linear regression model for selected features:
 |method|mse|features|
+|------|-|-|
 |forward|0.1138|'PCA1', 'Company', 'drivewheel', 'carbody'|
 |backward|0.1176|'PCA1', 'PCA2', 'PCA4', 'fueltype', 'doornumber', 'carbody', 'drivewheel', 'enginetype', 'cylindernumber', 'Company', 'Model|
 |stepwise|0.1138|'PCA1', 'Company', 'drivewheel', 'carbody'|

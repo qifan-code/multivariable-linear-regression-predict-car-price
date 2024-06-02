@@ -192,6 +192,7 @@ To check overfitting or underfitting issue, I run my model on training dataset a
 |-------|---|
 |training|0.0531|
 |testing|0.0788|
+
 There are not too much difference. So my model has neither overfitting nor underfitting issue. 
 
 

@@ -115,7 +115,7 @@ $$\beta_{\text{original}} = \frac{\beta_{\text{normalized}}}{\sigma}$$
 rescale intercept equation:
 $$\text{intercept}_{\text{original}} = \text{intercept}_{\text{normalized}} - \sum \left( \frac{\beta_{\text{normalized}} \times \mu}{\sigma} \right)$$
 
-## Method3: Using PCA
+## Method2: Using PCA
 ### Introduction to PCA
 PCA stands for Principal Component Analysis. It's a statistical procedure used primarily to reduce the dimensionality of a dataset while retaining as much variability (information) as possible. 
 If a dataset has multicollinearity issue, we can run PCA on and ONLY on numeric features to avoid this issue. 
@@ -174,7 +174,25 @@ Based rules above, I run linear regression model for selected features:
 |backward|0.1176|'PCA1', 'PCA2', 'PCA4', 'fueltype', 'doornumber', 'carbody', 'drivewheel', 'enginetype', 'cylindernumber', 'Company', 'Model|
 |stepwise|0.1138|'PCA1', 'Company', 'drivewheel', 'carbody'|
 
+## Method3: Using feature selection
+As I introduced before, we can use forward, backward and stepwise selction. 
+Here is my result: 
+|method|mse|features|
+|------|-|-|
+|forward|0.081|'curbweight', 'enginesize', 'peakrpm', 'stroke', 'compressionratio', 'Company', 'citympg', 'wheelbase', 'horsepower', 'enginetype', 'boreratio'|
+|backward|0.079|'fueltype', 'aspiration', 'doornumber', 'carbody', 'enginelocation', 'wheelbase', 'curbweight', 'enginetype', 'enginesize', 'boreratio', 'stroke', 'compressionratio', 'peakrpm', 'citympg', 'highwaympg', 'Company'|
+|stepwise|0.0815|'enginesize', 'peakrpm', 'stroke', 'compressionratio', 'Company', 'citympg', 'wheelbase', 'horsepower'|
 
+## cross validation
+To get the most accurate score of my model, I need run cross validation of dataset. Here I use 10-fold cross validation to generate my mse = 0.07580652185151038 which means accuracy = 92.4%
+
+## check overfitting or underfitting
+To check overfitting or underfitting issue, I run my model on training dataset and testing dataset. 
+|dataset|mse|
+|-------|---|
+|training|0.0531|
+|testing|0.0788|
+There are not too much difference. So my model has neither overfitting nor underfitting issue. 
 
 
 

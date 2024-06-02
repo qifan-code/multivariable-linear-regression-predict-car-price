@@ -58,6 +58,45 @@ For checking Linearity, I use Harvey-Collier Test and residual fitted plot. But,
 ### Homoscedasticity
 To check homoscedasticity, we mainly use ncv() Test in R. But in python, we use the Breusch-Pagan test. After testing, my p-value is less than 0.05 so homoscedasticity passed. 
 
+## Remove outlier
+For outliers, we cant simply use 1.5-IQR Rule because for me, it is an entry level of static. There are so many outliers such as studentized residuals, high leverage points and high cook's distances points. Here are outlier selection rules based on these three kinds of points: 
+1. Studentized residuals greater than 2 or less than -2
+2. High leverage points (greater than 2*(k+1)/n where k is the number of predictors and n is the number of observations)
+3. High Cook's distance (commonly used threshold is 4/(n-k-1))
+
+After this process, I found about 20 outliers. Then I remove all of them from dataset. 
+
+## Multicollearity
+From previous chapter, in Durbin-Watson Test, it indicates my dataset may have multicollearity issue. Here, I use vif to check my dataset. After running program, there indeed some features has vif score greater than 5 such as "curbweight", "horsepower" etc. 
+To avoid this issue, I will perform PCA, Lasso Regulation and feature selection to get more accurate model. 
+
+Note: 
+usually vif is to check numeric features. If some category features has large vif, just ignore them. 
+
+## PowerTransformation
+As previous talked, I didnt find any issue of Linearity. So PowerTransformation is no needed. But, for further analysis, I will improve my code of running transformation test to check if it is needed. So I just set it as "TODO" here. 
+
+## Basic implementation of using all features
+After checking those points, I tried to make a naive implement of multivariable linear regression. Based on summary report, it shows: 
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The smallest eigenvalue is 7.19e-27. This might indicate that there are strong multicollinearity problems or that the design matrix is singular.
+
+So I will use several strageties to solve multicollinearity issue. 
+
+## Using Lasso Regression
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
